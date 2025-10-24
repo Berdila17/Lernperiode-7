@@ -10,9 +10,9 @@
 
 ## 24.10.
 
-- [ ] Arbeitspaket 1: Erstellen Sie mehrere Skizzen von Ihrem *front end*. Überlegen Sie sich auch, welche Elemente die Interaktion mit dem *back end* auslösen und wie sich die Oberfläche dadurch verändert. Bauen Sie auch Interaktionen ein, die *keinen* Aufruf der API benötigen, sondern sich im *client* bearbeiten lassen (sortieren, suchen etc.)
-- [ ] Arbeitspaket 2: Setzen Sie in HTML und CSS Ihren Entwurf auf rudimentäre Weise um.
-- [ ] Arbeitspaket 3: Schreiben Sie ersten JS-Code als *proof of concept* (bspw. Meldung bei Klick auf Knopf-Element)
+- [x] Arbeitspaket 1: Erstellen Sie mehrere Skizzen von Ihrem *front end*. Überlegen Sie sich auch, welche Elemente die Interaktion mit dem *back end* auslösen und wie sich die Oberfläche dadurch verändert. Bauen Sie auch Interaktionen ein, die *keinen* Aufruf der API benötigen, sondern sich im *client* bearbeiten lassen (sortieren, suchen etc.)
+- [x] Arbeitspaket 2: Setzen Sie in HTML und CSS Ihren Entwurf auf rudimentäre Weise um.
+- [x] Arbeitspaket 3: Schreiben Sie ersten JS-Code als *proof of concept* (bspw. Meldung bei Klick auf Knopf-Element)
 
 ✍️ Heute habe ich mit der Grob Planung angefangen und überlegt was ich machen könnte danach hab ich von der Website eine Skizze erstellt wie denn sie aussehen könnte hab es dann in ChatGBT reingeschickt um das "Skelett der Website zu erhalten und zum Schluss hab ich das proof of concept erstellt was zuerst ein bisschen tricky war weil ich mir unsicher war wie die js Datei man mit dem HTML verbinden kann aber dann ging es relativ schnell.
 
@@ -30,9 +30,10 @@
 - [ ] Die Struktur ein bisschen verbessern (Navigationsleiste etc.)
 - [ ] API Daten laden
 - [ ] Alle Länder anzeigen lassen
-- [ ] funktionierende Filter
+- [ ] funktionierende Filter (man kann die Länder nach Region filtern)
 
 ✍️ Heute habe ich... (50-100 Wörter)
 
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
