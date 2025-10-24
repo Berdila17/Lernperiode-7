@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Länder-Explorer (Mock)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="searchbar">
+        <input placeholder="Land suchen… (Name, Code, Region)" />
+        <button title="Suche"><span>🔍</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="layout">
+      <!-- Hauptbereich: Grid + Detail-Mock -->
+      <section>
+        <div class="grid">
+          <!-- Karten – Platzhalter (später per JS füllen) -->
+          <div class="card">
+            <div class="flag">Flagge</div>
+            <div class="meta">
+              <div>
+                <div class="name">Schweiz</div>
+                <small class="muted">Europa • 8.7 Mio.</small>
+              </div>
+              <div class="fav" title="Favorit">☆</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="flag">Flagge</div>
+            <div class="meta">
+              <div>
+                <div class="name">Japan</div>
+                <small class="muted">Asien • 125 Mio.</small>
+              </div>
+              <div class="fav">☆</div>
+            </div>
+          </div>
+          <!-- ... in deinem <main class="wrap"> -->
+       <button id="pingBtn" class="apply-btn">Klick mich</button>
+        <p id="status" class="muted"></p>
+           <!-- ... -->
+
+             <!-- vor </body> -->
+<script src="app.js"></script>
+
+          <div class="card">
+            <div class="flag">Flagge</div>
+            <div class="meta">
+              <div>
+                <div class="name">Kanada</div>
+                <small class="muted">Amerika • 38 Mio.</small>
+              </div>
+              <div class="fav">☆</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail-Ansicht (rudimentär) -->
+        <div class="detail" style="margin-top:24px">
+          <div class="flag">Flagge</div>
+          <div>
+            <h2 style="margin:0 0 6px 0">Land-Infos (Beispiel)</h2>
+            <div class="kv">
+              <div>Offizieller Name</div> <div>Schweizerische Eidgenossenschaft</div>
+              <div>Region</div>           <div>Europa <span class="badge">Mitteleuropa</span></div>
+              <div>Hauptstadt</div>       <div>Bern</div>
+              <div>Fläche</div>           <div>41’285 km²</div>
+              <div>Sprachen</div>         <div>de, fr, it, rm</div>
+              <div>Währung</div>          <div>CHF</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar: Filter wie skizziert -->
+      <aside>
+        <div class="filters">
+          <h2>Filter</h2>
+
+          <div class="group">
+            <h3>Region</h3>
+            <label><input type="checkbox" /> Afrika</label>
+            <label><input type="checkbox" /> Amerika</label>
+            <label><input type="checkbox" /> Asien</label>
+            <label><input type="checkbox" /> Europa</label>
+            <label><input type="checkbox" /> Ozeanien</label>
+          </div>
+
+          <div class="group">
+            <h3>Größe (Fläche)</h3>
+            <input type="range" min="0" max="100" />
+            <small class="muted">nur UI – später mit JS verbinden</small>
+          </div>
+
+          <div class="group">
+            <h3>Klima</h3>
+            <select>
+              <option>Beliebig</option>
+              <option>Temperiert</option>
+              <option>Tropisch</option>
+              <option>Arid</option>
+              <option>Polar</option>
+            </select>
+          </div>
+
+          <div class="group">
+            <h3>Sortierung</h3>
+            <select>
+              <option>Name (A–Z)</option>
+              <option>Name (Z–A)</option>
+              <option>Einwohner (↑)</option>
+              <option>Einwohner (↓)</option>
+            </select>
+          </div>
+
+          <button class="apply-btn">Filter anwenden (Mock)</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
