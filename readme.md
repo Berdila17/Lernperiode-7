@@ -27,13 +27,22 @@
 
 ## 31.10.
 
-- [ ] Die Struktur ein bisschen verbessern (Navigationsleiste etc.)
-- [ ] API Daten laden
-- [ ] Alle Länder anzeigen lassen
-- [ ] funktionierende Filter (man kann die Länder nach Region filtern)
+- [x] Die Struktur ein bisschen verbessern (Navigationsleiste etc.)
+- [x] API Daten laden
+- [x] Alle Länder anzeigen lassen
+- [x] funktionierende Filter (man kann die Länder nach Region filtern)
 
-✍️ Heute habe ich... (50-100 Wörter)
+✍️ Heute habe ich zuerst an die Struktur gepfeilt danach die Daten von API geladen was bisschen tricky zuersr war und dann hab ich an die Filter und das die Länder sich anzeigen lassen implementiert, Die Filter funktionieren noch nicht richtig aber die Sortierung dafür schon aber das werd ich das nächste mal besser machen.
 
+## 7.11
+
+- [ ] Filter verbessern also das sie auch echt gehen
+- [ ] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen z.B Fächengrösse, Bevölkerungsanzahl etc.
+- [ ] Hell und Dunkelmodus Funktion einbauen
+- [ ] Das man ein Land als Favoriten anklicken kann und dann etwas erscheint wie (Du hast dieses Land als Favorit gespeichert)
+
+  
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
