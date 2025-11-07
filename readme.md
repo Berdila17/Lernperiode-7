@@ -36,13 +36,23 @@
 
 ## 7.11
 
-- [ ] Filter verbessern also das sie auch echt gehen
-- [ ] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen z.B Fächengrösse, Bevölkerungsanzahl etc.
-- [ ] Hell und Dunkelmodus Funktion einbauen
-- [ ] Das man ein Land als Favoriten anklicken kann und dann etwas erscheint wie (Du hast dieses Land als Favorit gespeichert)
+- [x] Filter verbessern also das sie auch echt gehen
+- [x] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen z.B Fächengrösse, Bevölkerungsanzahl etc.
+- [x] Hell und Dunkelmodus Funktion einbauen
+- [x] Das man ein Land als Favoriten anklicken kann und dann etwas erscheint wie (Du hast dieses Land als Favorit gespeichert)
 
-  
+  Heute ist es nicht so gut gelaufen wie sonst aber ich habe dazu gelernt was gut gegangen ist waren die letzten 2 Arbeitspakete die konnte ich machen ohne grosse schwierigkeiten aber die Filter bereiten mir Schwierigkeiten und ich muss nach einen effektiveren Weg suchen um die Steckbrief Informationen rauszugeben weil ich das was ich zuerst ausprobiert habe nicht funktioniert hat und danach hab ich Chatgbt für Hilfe gefragt aber seine Hilfe hat mich auch nicht weitergeholfen.Warum ich dann auch aufgegeben habe es zu weiterversuchen. Ich habe auch erst heute angefangen.
+
+
+## 14.11
+
+- [ ] Filter verbessern also das sie auch echt gehen (es soll diesmal auch funktionieren)
+- [ ] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen (es soll diesmal funktionieren)
+- [ ] Seiten einbauen zum Beispiel auf der ersten Seite sieht man nur 20 Länder.
+- [ ] Ein Button einfügen das wenn man draufdrückt man wieder automatisch oben auf der Website ist.
+
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
