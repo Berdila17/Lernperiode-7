@@ -10,38 +10,30 @@
   <header>
     <div class="wrap header-content">
       <h1>Länder-Explorer</h1>
-      <div class="searchbar">
-        <input id="searchInput" placeholder="Land suchen… (z. B. Switzerland, Japan)" />
-        <button id="searchBtn">🔍</button>
+      <div class="actions">
+        <div class="searchbar">
+          <input id="searchInput" placeholder="Land suchen… (z. B. Switzerland, Japan)" />
+          <button id="searchBtn" class="btn">🔍</button>
+        </div>
+        <button id="toggleFavView" class="btn" title="Nur Favoriten anzeigen umschalten">⭐ Favoriten</button>
+        <button id="darkToggle" class="btn" title="Dark-Mode umschalten">🌙</button>
       </div>
     </div>
   </header>
 
+  
+  <div id="loading" class="loading hidden">Lade Daten …</div>
+
   <main class="wrap layout">
-    <!-- Hauptbereich -->
     <section>
       <h2 class="section-title">Länder</h2>
       <p id="status" class="muted"></p>
-      <div id="countries" class="grid">
-      </div>
+      <div id="countries" class="grid"></div>
     </section>
 
-    <!-- Sidebar-->
     <aside>
       <div class="filters">
         <h2>Filter</h2>
-
-        <div class="group">
-          <h3>Region</h3>
-          <select id="regionSelect">
-            <option value="">Alle</option>
-            <option value="Europe">Europa</option>
-            <option value="Asia">Asien</option>
-            <option value="Africa">Afrika</option>
-            <option value="Americas">Amerika</option>
-            <option value="Oceania">Ozeanien</option>
-          </select>
-        </div>
 
         <div class="group">
           <h3>Sortierung</h3>
@@ -49,17 +41,32 @@
             <option value="">keine</option>
             <option value="name-asc">Name (A–Z)</option>
             <option value="name-desc">Name (Z–A)</option>
-            <option value="pop-desc">Einwohner (↓)</option>
-            <option value="pop-asc">Einwohner (↑)</option>
           </select>
         </div>
 
-        <button id="resetBtn" class="apply-btn">Filter zurücksetzen</button>
+        <div class="group">
+          <label><input type="checkbox" id="onlyFav"> Nur Favoriten</label>
+        </div>
+
+        <button id="resetBtn" class="btn apply-btn">Filter zurücksetzen</button>
+        <p class="muted" id="favInfo">Favoriten: 0</p>
       </div>
     </aside>
   </main>
 
-<script src="app.js" defer></script>
+  
+  <section id="detail" class="detail hidden">
+    <button id="detailClose" class="detail-close" aria-label="Schließen">×</button>
+    <img id="detailFlag" class="detail-flag" alt="" />
+    <div class="detail-body">
+      <h3 id="detailName"></h3>
+      <div class="kv">
+        <div>ISO-2</div><div id="detailIso2">–</div>
+        <div>ISO-3</div><div id="detailIso3">–</div>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
-
