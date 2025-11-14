@@ -25,15 +25,33 @@
   <div id="loading" class="loading hidden">Lade Daten …</div>
 
   <main class="wrap layout">
+   
     <section>
       <h2 class="section-title">Länder</h2>
       <p id="status" class="muted"></p>
+
       <div id="countries" class="grid"></div>
+
+      
+      <nav id="pagination" class="pagination"></nav>
     </section>
 
+    
     <aside>
       <div class="filters">
         <h2>Filter</h2>
+
+        <div class="group">
+          <h3>Region</h3>
+          <select id="regionSelect">
+            <option value="">Alle</option>
+            <option value="Africa">Afrika</option>
+            <option value="Americas">Amerika</option>
+            <option value="Asia">Asien</option>
+            <option value="Europe">Europa</option>
+            <option value="Oceania">Ozeanien</option>
+          </select>
+        </div>
 
         <div class="group">
           <h3>Sortierung</h3>
@@ -41,11 +59,16 @@
             <option value="">keine</option>
             <option value="name-asc">Name (A–Z)</option>
             <option value="name-desc">Name (Z–A)</option>
+            <option value="pop-desc">Einwohner (↓)</option>
+            <option value="pop-asc">Einwohner (↑)</option>
           </select>
         </div>
 
         <div class="group">
-          <label><input type="checkbox" id="onlyFav"> Nur Favoriten</label>
+          <label>
+            <input type="checkbox" id="onlyFav">
+            Nur Favoriten
+          </label>
         </div>
 
         <button id="resetBtn" class="btn apply-btn">Filter zurücksetzen</button>
@@ -54,7 +77,7 @@
     </aside>
   </main>
 
-  
+
   <section id="detail" class="detail hidden">
     <button id="detailClose" class="detail-close" aria-label="Schließen">×</button>
     <img id="detailFlag" class="detail-flag" alt="" />
@@ -63,6 +86,9 @@
       <div class="kv">
         <div>ISO-2</div><div id="detailIso2">–</div>
         <div>ISO-3</div><div id="detailIso3">–</div>
+        <div>Region</div><div id="detailRegion">–</div>
+        <div>Subregion</div><div id="detailSubregion">–</div>
+        <div>Einwohner</div><div id="detailPopulation">–</div>
       </div>
     </div>
   </section>
