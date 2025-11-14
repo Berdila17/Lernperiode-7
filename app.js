@@ -1,162 +1,350 @@
 
-let alleLaender = [];
+let alleLaender = []; 
 let gefilterteLaender = [];
 let nurFavoriten = false;
+
 const favKey = "favCountries";
-const favoriten = new Set(JSON.parse(localStorage.getItem(favKey) || "[]")); 
+const favoriten = new Set(JSON.parse(localStorage.getItem(favKey) || "[]"));
 
-
+const pageSize = 20;
+let currentPage = 1;
+let totalPages = 1;
+let lastTotalItems = 0;
 const countriesEl  = document.getElementById("countries");
 const statusEl     = document.getElementById("status");
 const searchInput  = document.getElementById("searchInput");
 const searchBtn    = document.getElementById("searchBtn");
 const sortSelect   = document.getElementById("sortSelect");
+const regionSelect = document.getElementById("regionSelect");
 const resetBtn     = document.getElementById("resetBtn");
 const onlyFavCb    = document.getElementById("onlyFav");
 const favInfo      = document.getElementById("favInfo");
+const loadingBox   = document.getElementById("loading");
+const paginationEl = document.getElementById("pagination");
 const darkToggle   = document.getElementById("darkToggle");
 const favViewBtn   = document.getElementById("toggleFavView");
-const loadingBox   = document.getElementById("loading");
+const detailBox        = document.getElementById("detail");
+const detailClose      = document.getElementById("detailClose");
+const detailFlag       = document.getElementById("detailFlag");
+const detailName       = document.getElementById("detailName");
+const detailIso2       = document.getElementById("detailIso2");
+const detailIso3       = document.getElementById("detailIso3");
+const detailRegion     = document.getElementById("detailRegion");
+const detailSubregion  = document.getElementById("detailSubregion");
+const detailPopulation = document.getElementById("detailPopulation");
+const setStatus   = m => statusEl && (statusEl.textContent = m ?? "");
+const showLoading = on => loadingBox && loadingBox.classList.toggle("hidden", !on);
+const saveFavs    = () => localStorage.setItem(favKey, JSON.stringify([...favoriten]));
+const updateFavInfo = () => favInfo && (favInfo.textContent = "Favoriten: " + favoriten.size);
+const fmt = new Intl.NumberFormat("de-CH");
 
-const detailBox    = document.getElementById("detail");
-const detailClose  = document.getElementById("detailClose");
-const detailFlag   = document.getElementById("detailFlag");
-const detailName   = document.getElementById("detailName");
-const detailIso2   = document.getElementById("detailIso2");
-const detailIso3   = document.getElementById("detailIso3");
+
+const themeKey = "themeDark";
+
+if (localStorage.getItem(themeKey) === "1") {
+  document.body.classList.add("dark");
+}
+
+function updateDarkIcon() {
+  if (!darkToggle) return;
+  darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+}
+updateDarkIcon();
 
 
-const setStatus = (m)=> statusEl.textContent = m ?? "";
-const showLoading = (on)=> loadingBox.classList.toggle("hidden", !on);
-const saveFavs = ()=> localStorage.setItem(favKey, JSON.stringify([...favoriten]));
-const updateFavInfo = ()=> favInfo.textContent = "Favoriten: " + favoriten.size;
+async function ladeLaender() {
+  setStatus("Lade Länder…");
+  showLoading(true);
 
+  try {
+    
+    const flagsRes = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+    if (!flagsRes.ok) throw new Error("Flags-API nicht ok");
+    const flagsJson = await flagsRes.json();
+    const base = (flagsJson.data || []).map(x => ({
+      name: x.name,
+      flag: x.flag || x.flag_url,
+      iso2: x.iso2,
+      iso3: x.iso3
+    }));
 
-async function ladeLaender(){
-  setStatus("Lade Länder…"); showLoading(true);
-  try{
-    const res = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
-    if(!res.ok) throw new Error("API nicht ok");
-    const json = await res.json();
-    alleLaender = (json.data || []).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+    
+    let enrichMap = new Map();
+    try {
+      const rcRes = await fetch(
+        "https://restcountries.com/v3.1/all?fields=name,cca2,region,subregion,population"
+      );
+      if (!rcRes.ok) throw new Error("Restcountries nicht ok");
+      const rc = await rcRes.json();
+      rc.forEach(item => {
+        const iso2 = (item.cca2 || "").toUpperCase();
+        const nameCommon = item.name?.common;
+        enrichMap.set(iso2, {
+          region: item.region,
+          subregion: item.subregion,
+          population: item.population,
+          name: nameCommon
+        });
+      });
+    } catch (e) {
+      console.warn("Enrichment fehlgeschlagen – Filter eingeschränkt.", e);
+    }
+
+   
+    alleLaender = base
+      .map(c => {
+        const add = c.iso2 ? enrichMap.get(c.iso2.toUpperCase()) : undefined;
+        return {
+          name: add?.name || c.name,
+          flag: c.flag,
+          iso2: c.iso2,
+          iso3: c.iso3,
+          region: add?.region,
+          subregion: add?.subregion,
+          population: add?.population
+        };
+      })
+      .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+    currentPage = 1;
     gefilterteLaender = alleLaender;
     render();
-    setStatus(gefilterteLaender.length + " Länder geladen.");
-  }catch(e){
+    setStatus(`${gefilterteLaender.length} Länder geladen.`);
+  } catch (e) {
     console.error(e);
     setStatus("Fehler beim Laden der Länder 😢");
-  }finally{
+  } finally {
     showLoading(false);
   }
 }
 
 
-function render(){
-  let liste = [...alleLaender];
+function renderPagination() {
+  if (!paginationEl) return;
 
-  
-  const q = (searchInput.value||"").trim().toLowerCase();
-  if(q) liste = liste.filter(l => (l.name||"").toLowerCase().includes(q));
-
-  
-  if(nurFavoriten || (onlyFavCb && onlyFavCb.checked)){
-    liste = liste.filter(l => favoriten.has(l.name));
-  }
-
-
-  const mode = sortSelect.value;
-  if(mode==="name-asc")  liste.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
-  if(mode==="name-desc") liste.sort((a,b)=>(b.name||"").localeCompare(a.name||""));
-
-  gefilterteLaender = liste;
-
-  if(!liste.length){
-    countriesEl.innerHTML = '<p class="muted">Keine Länder gefunden.</p>';
-    setStatus("0 Länder gefunden.");
+  if (totalPages <= 1) {
+    paginationEl.innerHTML = "";
     return;
   }
 
-  countriesEl.innerHTML = liste.map((land,i)=>{
-    const name = land.name ?? "Unbekannt";
-    const flag = land.flag ?? land.flag_url ?? "";
-    const active = favoriten.has(name) ? "active" : "";
-    return `
-      <article class="card" data-idx="${i}">
-        <button class="star ${active}" data-star title="Favorit umschalten">⭐</button>
-        <img src="${flag}" alt="Flagge von ${name}" class="flag" loading="lazy">
-        <div class="name">${name}</div>
-      </article>
-    `;
-  }).join("");
-
-  setStatus(liste.length + " Länder gefunden.");
-  updateFavInfo();
+  paginationEl.innerHTML = `
+    <button class="page-btn" data-page="prev" ${currentPage === 1 ? "disabled" : ""}>
+      « Zurück
+    </button>
+    <span class="page-info">
+      Seite ${currentPage} / ${totalPages} – insgesamt ${lastTotalItems} Länder
+    </span>
+    <button class="page-btn" data-page="next" ${currentPage === totalPages ? "disabled" : ""}>
+      Weiter »
+    </button>
+  `;
 }
 
 
-function openDetail(land){
-  if(!land) return;
+function render() {
+  let liste = [...alleLaender];
+
+  
+  const q = (searchInput?.value || "").trim().toLowerCase();
+  if (q) {
+    liste = liste.filter(l => (l.name || "").toLowerCase().includes(q));
+  }
+
+  
+  const region = regionSelect?.value || "";
+  if (region) {
+    liste = liste.filter(
+      l => (l.region || "").toLowerCase() === region.toLowerCase()
+    );
+  }
+
+  
+  if (nurFavoriten || (onlyFavCb && onlyFavCb.checked)) {
+    liste = liste.filter(l => favoriten.has(l.name));
+  }
+
+  
+  const mode = sortSelect?.value || "";
+  switch (mode) {
+    case "name-asc":
+      liste.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+      break;
+    case "name-desc":
+      liste.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+      break;
+    case "pop-desc":
+      liste.sort((a, b) => (b.population || 0) - (a.population || 0));
+      break;
+    case "pop-asc":
+      liste.sort((a, b) => (a.population || 0) - (b.population || 0));
+      break;
+  }
+
+  
+  gefilterteLaender = liste;
+  lastTotalItems = liste.length;
+  totalPages = Math.max(1, Math.ceil(lastTotalItems / pageSize));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * pageSize;
+  const pageItems = liste.slice(start, start + pageSize);
+
+  if (!pageItems.length) {
+    countriesEl.innerHTML = '<p class="muted">Keine Länder gefunden.</p>';
+    setStatus("0 Länder gefunden.");
+    renderPagination();
+    return;
+  }
+
+  countriesEl.innerHTML = pageItems
+    .map((land, i) => {
+      const globalIndex = start + i;
+      const name = land.name ?? "Unbekannt";
+      const flag = land.flag ?? "";
+      const pop = land.population;
+      const reg = land.region;
+      const starActive = favoriten.has(name) ? "active" : "";
+      return `
+        <article class="card" data-idx="${globalIndex}">
+          <button class="star ${starActive}" data-star title="Favorit umschalten">⭐</button>
+          <img src="${flag}" alt="Flagge von ${name}" class="flag" loading="lazy" />
+          <div class="name">${name}</div>
+          <div class="muted small">
+            ${reg ? `Region: ${reg}` : "Region: –"}
+            ${typeof pop === "number" ? ` • Einwohner: ${fmt.format(pop)}` : ""}
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  setStatus(
+    `${lastTotalItems} Länder gefunden (Seite ${currentPage} von ${totalPages})`
+  );
+  updateFavInfo();
+  renderPagination();
+}
+
+
+function openDetail(land) {
+  if (!detailBox) return;
+
   const name = land.name ?? "Unbekannt";
-  const flag = land.flag ?? land.flag_url ?? "";
+  const flag = land.flag ?? "";
+
   detailFlag.src = flag;
   detailFlag.alt = "Flagge von " + name;
   detailName.textContent = name;
   detailIso2.textContent = land.iso2 || "–";
   detailIso3.textContent = land.iso3 || "–";
+  detailRegion.textContent = land.region || "–";
+  detailSubregion.textContent = land.subregion || "–";
+  detailPopulation.textContent =
+    typeof land.population === "number" ? fmt.format(land.population) : "–";
+
   detailBox.classList.remove("hidden");
-  detailBox.scrollIntoView({behavior:"smooth",block:"center"});
+  detailBox.scrollIntoView({ behavior: "smooth", block: "center" });
 }
-function closeDetail(){ detailBox.classList.add("hidden"); }
-detailClose.addEventListener("click", closeDetail);
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeDetail(); });
+
+function closeDetail() {
+  detailBox && detailBox.classList.add("hidden");
+}
+
+detailClose && detailClose.addEventListener("click", closeDetail);
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeDetail();
+});
 
 
-countriesEl.addEventListener("click", (e)=>{
-  const starBtn = e.target.closest("[data-star]");
+countriesEl.addEventListener("click", e => {
   const card = e.target.closest(".card");
-  if(!card) return;
+  if (!card) return;
+
   const idx = Number(card.dataset.idx);
   const land = gefilterteLaender[idx];
-  if(starBtn){
+
+  
+  if (e.target.closest("[data-star]")) {
     const name = land.name;
-    if(favoriten.has(name)) favoriten.delete(name); else favoriten.add(name);
+    if (favoriten.has(name)) favoriten.delete(name);
+    else favoriten.add(name);
     saveFavs();
     render();
     return;
   }
+
+  
   openDetail(land);
 });
 
-
-searchBtn.addEventListener("click", render);
-searchInput.addEventListener("input", render);
-sortSelect.addEventListener("change", render);
-resetBtn.addEventListener("click", ()=>{
-  searchInput.value=""; sortSelect.value=""; if(onlyFavCb) onlyFavCb.checked=false; nurFavoriten=false;
-  render(); closeDetail();
-  setStatus(alleLaender.length + " Länder geladen.");
+searchBtn && searchBtn.addEventListener("click", () => {
+  currentPage = 1;
+  render();
 });
-if(onlyFavCb){
-  onlyFavCb.addEventListener("change", ()=>{ render(); });
-}
-
-
-favViewBtn.addEventListener("click", ()=>{
-  nurFavoriten = !nurFavoriten;
-  favViewBtn.classList.toggle("active", nurFavoriten);
+searchInput && searchInput.addEventListener("input", () => {
+  currentPage = 1;
+  render();
+});
+sortSelect && sortSelect.addEventListener("change", () => {
+  currentPage = 1;
+  render();
+});
+regionSelect && regionSelect.addEventListener("change", () => {
+  currentPage = 1;
+  render();
+});
+onlyFavCb && onlyFavCb.addEventListener("change", () => {
+  currentPage = 1;
   render();
 });
 
+resetBtn &&
+  resetBtn.addEventListener("click", () => {
+    if (searchInput) searchInput.value = "";
+    if (sortSelect) sortSelect.value = "";
+    if (regionSelect) regionSelect.value = "";
+    if (onlyFavCb) onlyFavCb.checked = false;
+    nurFavoriten = false;
+    currentPage = 1;
+    render();
+    closeDetail();
+    setStatus(`${alleLaender.length} Länder geladen.`);
+  });
 
-const themeKey = "themeDark";
-if(localStorage.getItem(themeKey)==="1"){ document.body.classList.add("dark"); }
-const updateDarkIcon = ()=> darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-updateDarkIcon();
-darkToggle.addEventListener("click", ()=>{
-  document.body.classList.toggle("dark");
-  localStorage.setItem(themeKey, document.body.classList.contains("dark") ? "1" : "0");
-  updateDarkIcon();
-});
+
+paginationEl &&
+  paginationEl.addEventListener("click", e => {
+    const btn = e.target.closest(".page-btn");
+    if (!btn) return;
+
+    if (btn.dataset.page === "prev" && currentPage > 1) {
+      currentPage--;
+      render();
+    } else if (btn.dataset.page === "next" && currentPage < totalPages) {
+      currentPage++;
+      render();
+    }
+  });
+
+
+favViewBtn &&
+  favViewBtn.addEventListener("click", () => {
+    nurFavoriten = !nurFavoriten;
+    favViewBtn.classList.toggle("active", nurFavoriten);
+    currentPage = 1;
+    render();
+  });
+
+
+darkToggle &&
+  darkToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+      themeKey,
+      document.body.classList.contains("dark") ? "1" : "0"
+    );
+    updateDarkIcon();
+  });
 
 
 ladeLaender();
