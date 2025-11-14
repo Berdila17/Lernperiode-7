@@ -46,12 +46,26 @@
 
 ## 14.11
 
-- [ ] Filter verbessern also das sie auch echt gehen (es soll diesmal auch funktionieren)
-- [ ] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen (es soll diesmal funktionieren)
-- [ ] Seiten einbauen zum Beispiel auf der ersten Seite sieht man nur 20 Länder.
+- [x] Filter verbessern also das sie auch echt gehen (es soll diesmal auch funktionieren)
+- [x] Wenn man auf ein Land geht das dann Steckbrief Informationen rauskommen (es soll diesmal funktionieren)
+- [x] Seiten einbauen zum Beispiel auf der ersten Seite sieht man nur 20 Länder.
 - [ ] Ein Button einfügen das wenn man draufdrückt man wieder automatisch oben auf der Website ist.
 
+
+Heute ist ein sehr produktiver Tag gewesen da die Implentation was letztes mal nicht klappte heute sehr gut geklappt hat obwohl ich nur 3 Arbeitspakete fertig machen konnte fühlte es sich trotzdem wie eine Menge arbeit an aber es hat auch Spass gemacht. Die Seiten einzubauen war zuerst ein bisschen schwierig aber danach hats funktioniert. Zum Schluss hat es leider nicht gereicht das vierte Arbeitspaket zu erledigen.
+
+
+## 21.11
+
+- [ ] Ein Button einfügen das wenn man draufdrückt man wieder automatisch oben auf der Website ist.
+- [ ] Mehr Infos in den Steckbriefe zu stecken(Fläche,Hauptstadt).
+- [ ] Live Vorschläge während der Suche einzubauen wie bei Google.
+- [ ] Ein bisschen Animation hinzufügen nicht das die Karten einfach so da stehen sondern irgendwie escheinen wie bei Powerpoints.
+
+
+
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
