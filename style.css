@@ -60,11 +60,14 @@ header h1 {
   cursor: pointer;
 }
 
+
 .searchbar {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   max-width: 420px;
+  flex: 1;
 }
 
 .searchbar input {
@@ -73,6 +76,39 @@ header h1 {
   border: 1px solid var(--line);
   border-radius: 10px;
   outline: none;
+}
+
+
+.search-suggestions {
+  position: absolute;
+  left: 0;
+  right: 56px; 
+  top: 38px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: none;
+  z-index: 20;
+}
+
+.search-suggestions.show {
+  display: block;
+}
+
+.search-suggestions button {
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-suggestions button:hover {
+  background: #eef2ff;
 }
 
 
@@ -146,12 +182,17 @@ aside {
   border: 1px solid var(--line);
   border-radius: 14px;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.35s ease forwards;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .flag {
@@ -166,6 +207,7 @@ aside {
   font-weight: 600;
 }
 
+
 .star {
   position: absolute;
   top: 8px;
@@ -178,11 +220,21 @@ aside {
   border: 1px solid var(--line);
   border-radius: 50%;
   cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .star.active {
   color: #f59e0b;
   border-color: #f59e0b;
+}
+
+.star:active {
+  transform: scale(1.25);
+}
+
+.small {
+  font-size: 13px;
+  color: var(--muted);
 }
 
 
@@ -249,17 +301,6 @@ aside {
   }
 }
 
-.dark {
-  --bg: #0b1220;
-  --card: #0f172a;
-  --text: #e5e7eb;
-  --muted: #9aa4b2;
-  --line: #1f2937;
-}
-
-.dark .card:hover {
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.06);
-}
 
 .pagination {
   margin-top: 16px;
@@ -285,4 +326,59 @@ aside {
 
 .page-info {
   color: var(--muted);
+}
+
+
+.to-top-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent, #2563eb);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  z-index: 999;
+}
+
+.to-top-btn.show {
+  display: flex;
+  opacity: 1;
+}
+
+.to-top-btn:hover {
+  transform: translateY(-4px);
+}
+
+
+.dark {
+  --bg: #0b1220;
+  --card: #0f172a;
+  --text: #e5e7eb;
+  --muted: #9aa4b2;
+  --line: #1f2937;
+}
+
+.dark .card:hover {
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.06);
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
