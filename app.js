@@ -1,8 +1,6 @@
-
 let alleLaender = []; 
 let gefilterteLaender = [];
 let nurFavoriten = false;
-
 const favKey = "favCountries";
 const favoriten = new Set(JSON.parse(localStorage.getItem(favKey) || "[]"));
 
@@ -21,6 +19,7 @@ const onlyFavCb    = document.getElementById("onlyFav");
 const favInfo      = document.getElementById("favInfo");
 const loadingBox   = document.getElementById("loading");
 const paginationEl = document.getElementById("pagination");
+const suggestionsEl = document.getElementById("searchSuggestions");
 const darkToggle   = document.getElementById("darkToggle");
 const favViewBtn   = document.getElementById("toggleFavView");
 const detailBox        = document.getElementById("detail");
@@ -31,7 +30,10 @@ const detailIso2       = document.getElementById("detailIso2");
 const detailIso3       = document.getElementById("detailIso3");
 const detailRegion     = document.getElementById("detailRegion");
 const detailSubregion  = document.getElementById("detailSubregion");
+const detailCapital    = document.getElementById("detailCapital");
+const detailArea       = document.getElementById("detailArea");
 const detailPopulation = document.getElementById("detailPopulation");
+const toTopBtn = document.getElementById("toTopBtn");
 const setStatus   = m => statusEl && (statusEl.textContent = m ?? "");
 const showLoading = on => loadingBox && loadingBox.classList.toggle("hidden", !on);
 const saveFavs    = () => localStorage.setItem(favKey, JSON.stringify([...favoriten]));
@@ -72,22 +74,25 @@ async function ladeLaender() {
     let enrichMap = new Map();
     try {
       const rcRes = await fetch(
-        "https://restcountries.com/v3.1/all?fields=name,cca2,region,subregion,population"
+        "https://restcountries.com/v3.1/all?fields=name,cca2,region,subregion,capital,area,population"
       );
       if (!rcRes.ok) throw new Error("Restcountries nicht ok");
       const rc = await rcRes.json();
       rc.forEach(item => {
         const iso2 = (item.cca2 || "").toUpperCase();
         const nameCommon = item.name?.common;
+        const capital = Array.isArray(item.capital) ? item.capital[0] : item.capital;
         enrichMap.set(iso2, {
           region: item.region,
           subregion: item.subregion,
           population: item.population,
+          area: item.area,
+          capital,
           name: nameCommon
         });
       });
     } catch (e) {
-      console.warn("Enrichment fehlgeschlagen – Filter eingeschränkt.", e);
+      console.warn("Enrichment fehlgeschlagen – erweiterte Infos eingeschränkt.", e);
     }
 
    
@@ -101,6 +106,8 @@ async function ladeLaender() {
           iso3: c.iso3,
           region: add?.region,
           subregion: add?.subregion,
+          capital: add?.capital,
+          area: add?.area,
           population: add?.population
         };
       })
@@ -158,7 +165,7 @@ function render() {
     );
   }
 
-  
+
   if (nurFavoriten || (onlyFavCb && onlyFavCb.checked)) {
     liste = liste.filter(l => favoriten.has(l.name));
   }
@@ -180,7 +187,7 @@ function render() {
       break;
   }
 
-  
+ 
   gefilterteLaender = liste;
   lastTotalItems = liste.length;
   totalPages = Math.max(1, Math.ceil(lastTotalItems / pageSize));
@@ -225,7 +232,6 @@ function render() {
   renderPagination();
 }
 
-
 function openDetail(land) {
   if (!detailBox) return;
 
@@ -239,6 +245,9 @@ function openDetail(land) {
   detailIso3.textContent = land.iso3 || "–";
   detailRegion.textContent = land.region || "–";
   detailSubregion.textContent = land.subregion || "–";
+  detailCapital.textContent = land.capital || "–";
+  detailArea.textContent =
+    typeof land.area === "number" ? fmt.format(land.area) + " km²" : "–";
   detailPopulation.textContent =
     typeof land.population === "number" ? fmt.format(land.population) : "–";
 
@@ -277,26 +286,122 @@ countriesEl.addEventListener("click", e => {
   openDetail(land);
 });
 
-searchBtn && searchBtn.addEventListener("click", () => {
-  currentPage = 1;
-  render();
+function updateSuggestions() {
+  if (!suggestionsEl || !searchInput) return;
+
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) {
+    suggestionsEl.innerHTML = "";
+    suggestionsEl.classList.remove("show");
+    return;
+  }
+
+  const matches = alleLaender
+    .filter(l => (l.name || "").toLowerCase().startsWith(q))
+    .slice(0, 7);
+
+  if (!matches.length) {
+    suggestionsEl.innerHTML = "";
+    suggestionsEl.classList.remove("show");
+    return;
+  }
+
+  suggestionsEl.innerHTML = matches
+    .map(
+      l => `
+      <button type="button" data-name="${l.name}">
+        ${l.name}
+      </button>
+    `
+    )
+    .join("");
+
+  suggestionsEl.classList.add("show");
+}
+
+suggestionsEl &&
+  suggestionsEl.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-name]");
+    if (!btn) return;
+    const name = btn.dataset.name;
+    const land = alleLaender.find(l => l.name === name);
+    if (!land) return;
+
+    searchInput.value = name;
+    nurFavoriten = false;
+    if (onlyFavCb) onlyFavCb.checked = false;
+    currentPage = 1;
+    render();
+    openDetail(land);
+
+    suggestionsEl.innerHTML = "";
+    suggestionsEl.classList.remove("show");
+  });
+
+
+document.addEventListener("click", e => {
+  if (!suggestionsEl) return;
+  if (
+    e.target === searchInput ||
+    e.target === suggestionsEl ||
+    suggestionsEl.contains(e.target)
+  ) {
+    return;
+  }
+  suggestionsEl.innerHTML = "";
+  suggestionsEl.classList.remove("show");
 });
-searchInput && searchInput.addEventListener("input", () => {
-  currentPage = 1;
-  render();
-});
-sortSelect && sortSelect.addEventListener("change", () => {
-  currentPage = 1;
-  render();
-});
-regionSelect && regionSelect.addEventListener("change", () => {
-  currentPage = 1;
-  render();
-});
-onlyFavCb && onlyFavCb.addEventListener("change", () => {
-  currentPage = 1;
-  render();
-});
+
+
+if (toTopBtn) {
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      toTopBtn.classList.add("show");
+    } else {
+      toTopBtn.classList.remove("show");
+    }
+  });
+
+  toTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+}
+
+
+searchBtn &&
+  searchBtn.addEventListener("click", () => {
+    currentPage = 1;
+    render();
+    updateSuggestions();
+  });
+
+searchInput &&
+  searchInput.addEventListener("input", () => {
+    currentPage = 1;
+    render();
+    updateSuggestions();
+  });
+
+sortSelect &&
+  sortSelect.addEventListener("change", () => {
+    currentPage = 1;
+    render();
+  });
+
+regionSelect &&
+  regionSelect.addEventListener("change", () => {
+    currentPage = 1;
+    render();
+  });
+
+onlyFavCb &&
+  onlyFavCb.addEventListener("change", () => {
+    currentPage = 1;
+    render();
+  });
 
 resetBtn &&
   resetBtn.addEventListener("click", () => {
@@ -308,6 +413,7 @@ resetBtn &&
     currentPage = 1;
     render();
     closeDetail();
+    updateSuggestions();
     setStatus(`${alleLaender.length} Länder geladen.`);
   });
 
