@@ -57,14 +57,21 @@ Heute ist ein sehr produktiver Tag gewesen da die Implentation was letztes mal n
 
 ## 21.11
 
-- [ ] Ein Button einfügen das wenn man draufdrückt man wieder automatisch oben auf der Website ist.
-- [ ] Mehr Infos in den Steckbriefe zu stecken(Fläche,Hauptstadt).
-- [ ] Live Vorschläge während der Suche einzubauen wie bei Google.
-- [ ] Ein bisschen Animation hinzufügen nicht das die Karten einfach so da stehen sondern irgendwie escheinen wie bei Powerpoints.
+- [x] Ein Button einfügen das wenn man draufdrückt man wieder automatisch oben auf der Website ist.
+- [x] Mehr Infos in den Steckbriefe zu stecken(Fläche,Hauptstadt).
+- [x] Live Vorschläge während der Suche einzubauen wie bei Google.
+- [x] Ein bisschen Animation hinzufügen nicht das die Karten einfach so da stehen sondern irgendwie escheinen wie bei Powerpoints.
 
+Heute habe ich alle Arbeitspakete erledigt das erste Arbeitspaket war eigentlich gar nicht so schwer das was eher Mühe zuerst bereitet hat waren die Live Vorchläge und die Animation aber bei der Live Vorschläge hat mir dann ChatGBT und bei der Animation Tiktok geholfen auch wenn es jetzt keine krasse Animation ist, ist es wenigstens etwas für den Anfang.
 
+## 28.11
 
+- [ ] Länder nach Flächengrösse sortieren können.
+- [ ] Button mit den man die Favoriten alle auf einmal löschen kann
+- [ ] Layout anpaassen so das man es auch auf den Handy benutzen kann.
+- [ ] Vergleich Modus machen zuerst einmal zum Beispiel nur die Einwohner vergleichen.
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
