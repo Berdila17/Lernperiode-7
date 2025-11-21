@@ -14,6 +14,9 @@
         <div class="searchbar">
           <input id="searchInput" placeholder="Land suchen… (z. B. Switzerland, Japan)" />
           <button id="searchBtn" class="btn">🔍</button>
+
+         
+          <div id="searchSuggestions" class="search-suggestions"></div>
         </div>
         <button id="toggleFavView" class="btn" title="Nur Favoriten anzeigen umschalten">⭐ Favoriten</button>
         <button id="darkToggle" class="btn" title="Dark-Mode umschalten">🌙</button>
@@ -25,14 +28,13 @@
   <div id="loading" class="loading hidden">Lade Daten …</div>
 
   <main class="wrap layout">
-   
     <section>
       <h2 class="section-title">Länder</h2>
       <p id="status" class="muted"></p>
 
       <div id="countries" class="grid"></div>
 
-      
+     
       <nav id="pagination" class="pagination"></nav>
     </section>
 
@@ -51,6 +53,7 @@
             <option value="Europe">Europa</option>
             <option value="Oceania">Ozeanien</option>
           </select>
+          <small class="muted">*Region kommt aus restcountries.com</small>
         </div>
 
         <div class="group">
@@ -77,7 +80,7 @@
     </aside>
   </main>
 
-
+ 
   <section id="detail" class="detail hidden">
     <button id="detailClose" class="detail-close" aria-label="Schließen">×</button>
     <img id="detailFlag" class="detail-flag" alt="" />
@@ -88,10 +91,14 @@
         <div>ISO-3</div><div id="detailIso3">–</div>
         <div>Region</div><div id="detailRegion">–</div>
         <div>Subregion</div><div id="detailSubregion">–</div>
+        <div>Hauptstadt</div><div id="detailCapital">–</div>
+        <div>Fläche</div><div id="detailArea">–</div>
         <div>Einwohner</div><div id="detailPopulation">–</div>
       </div>
     </div>
   </section>
+
+  <button id="toTopBtn" class="to-top-btn">⬆</button>
 
   <script src="app.js" defer></script>
 </body>
