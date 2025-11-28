@@ -1,3 +1,4 @@
+
 let alleLaender = []; 
 let gefilterteLaender = [];
 let nurFavoriten = false;
@@ -8,17 +9,19 @@ const pageSize = 20;
 let currentPage = 1;
 let totalPages = 1;
 let lastTotalItems = 0;
-const countriesEl  = document.getElementById("countries");
-const statusEl     = document.getElementById("status");
-const searchInput  = document.getElementById("searchInput");
-const searchBtn    = document.getElementById("searchBtn");
-const sortSelect   = document.getElementById("sortSelect");
-const regionSelect = document.getElementById("regionSelect");
-const resetBtn     = document.getElementById("resetBtn");
-const onlyFavCb    = document.getElementById("onlyFav");
-const favInfo      = document.getElementById("favInfo");
-const loadingBox   = document.getElementById("loading");
-const paginationEl = document.getElementById("pagination");
+let compareNames = new Set();
+const countriesEl   = document.getElementById("countries");
+const statusEl      = document.getElementById("status");
+const searchInput   = document.getElementById("searchInput");
+const searchBtn     = document.getElementById("searchBtn");
+const sortSelect    = document.getElementById("sortSelect");
+const regionSelect  = document.getElementById("regionSelect");
+const resetBtn      = document.getElementById("resetBtn");
+const clearFavBtn   = document.getElementById("clearFavBtn");
+const onlyFavCb     = document.getElementById("onlyFav");
+const favInfo       = document.getElementById("favInfo");
+const loadingBox    = document.getElementById("loading");
+const paginationEl  = document.getElementById("pagination");
 const suggestionsEl = document.getElementById("searchSuggestions");
 const darkToggle   = document.getElementById("darkToggle");
 const favViewBtn   = document.getElementById("toggleFavView");
@@ -33,6 +36,10 @@ const detailSubregion  = document.getElementById("detailSubregion");
 const detailCapital    = document.getElementById("detailCapital");
 const detailArea       = document.getElementById("detailArea");
 const detailPopulation = document.getElementById("detailPopulation");
+const compareSection = document.getElementById("compareSection");
+const compareContent = document.getElementById("compareContent");
+const compareInfo    = document.getElementById("compareInfo");
+const compareClear   = document.getElementById("compareClear");
 const toTopBtn = document.getElementById("toTopBtn");
 const setStatus   = m => statusEl && (statusEl.textContent = m ?? "");
 const showLoading = on => loadingBox && loadingBox.classList.toggle("hidden", !on);
@@ -40,7 +47,7 @@ const saveFavs    = () => localStorage.setItem(favKey, JSON.stringify([...favori
 const updateFavInfo = () => favInfo && (favInfo.textContent = "Favoriten: " + favoriten.size);
 const fmt = new Intl.NumberFormat("de-CH");
 
-
+// Dark mode
 const themeKey = "themeDark";
 
 if (localStorage.getItem(themeKey) === "1") {
@@ -53,13 +60,13 @@ function updateDarkIcon() {
 }
 updateDarkIcon();
 
-
+// Daten laden 
 async function ladeLaender() {
   setStatus("Lade Länder…");
   showLoading(true);
 
   try {
-    
+    // 1) Flaggen und Namen
     const flagsRes = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
     if (!flagsRes.ok) throw new Error("Flags-API nicht ok");
     const flagsJson = await flagsRes.json();
@@ -70,7 +77,7 @@ async function ladeLaender() {
       iso3: x.iso3
     }));
 
-    
+    // Region, Hauptstadt, Fläche, Population
     let enrichMap = new Map();
     try {
       const rcRes = await fetch(
@@ -92,10 +99,10 @@ async function ladeLaender() {
         });
       });
     } catch (e) {
-      console.warn("Enrichment fehlgeschlagen – erweiterte Infos eingeschränkt.", e);
+      console.warn("Enrichment fehlgeschlagen – Zusatzdaten eingeschränkt.", e);
     }
 
-   
+    // Merge iso2
     alleLaender = base
       .map(c => {
         const add = c.iso2 ? enrichMap.get(c.iso2.toUpperCase()) : undefined;
@@ -125,7 +132,7 @@ async function ladeLaender() {
   }
 }
 
-
+// Seitennummerierung rendern
 function renderPagination() {
   if (!paginationEl) return;
 
@@ -147,17 +154,17 @@ function renderPagination() {
   `;
 }
 
-
+// Rendern 
 function render() {
   let liste = [...alleLaender];
 
-  
+  // Suche
   const q = (searchInput?.value || "").trim().toLowerCase();
   if (q) {
     liste = liste.filter(l => (l.name || "").toLowerCase().includes(q));
   }
 
-  
+  // Region
   const region = regionSelect?.value || "";
   if (region) {
     liste = liste.filter(
@@ -165,12 +172,12 @@ function render() {
     );
   }
 
-
+  // Nur Favoriten
   if (nurFavoriten || (onlyFavCb && onlyFavCb.checked)) {
     liste = liste.filter(l => favoriten.has(l.name));
   }
 
-  
+  // Sortierung 
   const mode = sortSelect?.value || "";
   switch (mode) {
     case "name-asc":
@@ -185,9 +192,15 @@ function render() {
     case "pop-asc":
       liste.sort((a, b) => (a.population || 0) - (b.population || 0));
       break;
+    case "area-desc":
+      liste.sort((a, b) => (b.area || 0) - (a.area || 0));
+      break;
+    case "area-asc":
+      liste.sort((a, b) => (a.area || 0) - (b.area || 0));
+      break;
   }
 
- 
+  // Seitennummerierung
   gefilterteLaender = liste;
   lastTotalItems = liste.length;
   totalPages = Math.max(1, Math.ceil(lastTotalItems / pageSize));
@@ -211,8 +224,10 @@ function render() {
       const pop = land.population;
       const reg = land.region;
       const starActive = favoriten.has(name) ? "active" : "";
+      const isCompared = compareNames.has(name) ? "compare-selected" : "";
+
       return `
-        <article class="card" data-idx="${globalIndex}">
+        <article class="card ${isCompared}" data-idx="${globalIndex}">
           <button class="star ${starActive}" data-star title="Favorit umschalten">⭐</button>
           <img src="${flag}" alt="Flagge von ${name}" class="flag" loading="lazy" />
           <div class="name">${name}</div>
@@ -220,6 +235,7 @@ function render() {
             ${reg ? `Region: ${reg}` : "Region: –"}
             ${typeof pop === "number" ? ` • Einwohner: ${fmt.format(pop)}` : ""}
           </div>
+          <button class="compare-btn" data-compare>⚖ Vergleichen</button>
         </article>
       `;
     })
@@ -230,8 +246,10 @@ function render() {
   );
   updateFavInfo();
   renderPagination();
+  renderComparePanel();
 }
 
+// Steckbrief 
 function openDetail(land) {
   if (!detailBox) return;
 
@@ -264,7 +282,72 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeDetail();
 });
 
+// Vergleichsmodus
+function toggleCompare(land) {
+  const name = land.name;
+  if (!name) return;
 
+  if (compareNames.has(name)) {
+    compareNames.delete(name);
+  } else {
+    if (compareNames.size >= 2) {
+      // max 2
+      setStatus("Maximal 2 Länder im Vergleich. Entferne zuerst eines.");
+      return;
+    }
+    compareNames.add(name);
+  }
+  render();
+}
+
+function renderComparePanel() {
+  if (!compareSection || !compareContent) return;
+
+  if (compareNames.size === 0) {
+    compareSection.classList.add("hidden");
+    compareContent.innerHTML = "";
+    return;
+  }
+
+  compareSection.classList.remove("hidden");
+
+  const items = Array.from(compareNames).map(name =>
+    alleLaender.find(l => l.name === name)
+  ).filter(Boolean);
+
+  compareContent.innerHTML = items
+    .map(land => {
+      const pop = typeof land.population === "number" ? fmt.format(land.population) : "–";
+      const area = typeof land.area === "number" ? fmt.format(land.area) + " km²" : "–";
+      const capital = land.capital || "–";
+      const region = land.region || "–";
+
+      return `
+        <div class="compare-card">
+          <h3>${land.name}</h3>
+          <p><strong>Region:</strong> ${region}</p>
+          <p><strong>Hauptstadt:</strong> ${capital}</p>
+          <p><strong>Einwohner:</strong> ${pop}</p>
+          <p><strong>Fläche:</strong> ${area}</p>
+        </div>
+      `;
+    })
+    .join("");
+
+  if (compareNames.size === 1) {
+    compareInfo.textContent = "Ein Land ausgewählt. Wähle noch ein zweites für den Vergleich.";
+  } else if (compareNames.size === 2) {
+    compareInfo.textContent = "Zwei Länder im Vergleich (Einwohner & mehr).";
+  }
+}
+
+compareClear &&
+  compareClear.addEventListener("click", () => {
+    compareNames.clear();
+    render();
+  });
+
+//Klicks in Länderliste
 countriesEl.addEventListener("click", e => {
   const card = e.target.closest(".card");
   if (!card) return;
@@ -272,7 +355,7 @@ countriesEl.addEventListener("click", e => {
   const idx = Number(card.dataset.idx);
   const land = gefilterteLaender[idx];
 
-  
+  // Favorit
   if (e.target.closest("[data-star]")) {
     const name = land.name;
     if (favoriten.has(name)) favoriten.delete(name);
@@ -282,10 +365,17 @@ countriesEl.addEventListener("click", e => {
     return;
   }
 
-  
+  // Vergleich-Button
+  if (e.target.closest("[data-compare]")) {
+    toggleCompare(land);
+    return;
+  }
+
+  // Sonst Detail öffnen
   openDetail(land);
 });
 
+// Live-Vorschläge
 function updateSuggestions() {
   if (!suggestionsEl || !searchInput) return;
 
@@ -307,13 +397,7 @@ function updateSuggestions() {
   }
 
   suggestionsEl.innerHTML = matches
-    .map(
-      l => `
-      <button type="button" data-name="${l.name}">
-        ${l.name}
-      </button>
-    `
-    )
+    .map(l => `<button type="button" data-name="${l.name}">${l.name}</button>`)
     .join("");
 
   suggestionsEl.classList.add("show");
@@ -338,7 +422,6 @@ suggestionsEl &&
     suggestionsEl.classList.remove("show");
   });
 
-
 document.addEventListener("click", e => {
   if (!suggestionsEl) return;
   if (
@@ -352,7 +435,7 @@ document.addEventListener("click", e => {
   suggestionsEl.classList.remove("show");
 });
 
-
+// Nach oben 
 if (toTopBtn) {
   window.addEventListener("scroll", () => {
     if (window.scrollY > 300) {
@@ -363,14 +446,11 @@ if (toTopBtn) {
   });
 
   toTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
-
+// Events
 searchBtn &&
   searchBtn.addEventListener("click", () => {
     currentPage = 1;
@@ -411,13 +491,23 @@ resetBtn &&
     if (onlyFavCb) onlyFavCb.checked = false;
     nurFavoriten = false;
     currentPage = 1;
+    compareNames.clear();
     render();
     closeDetail();
     updateSuggestions();
     setStatus(`${alleLaender.length} Länder geladen.`);
   });
 
+// Alle Favoriten löschen
+clearFavBtn &&
+  clearFavBtn.addEventListener("click", () => {
+    favoriten.clear();
+    saveFavs();
+    render();
+    setStatus("Alle Favoriten wurden gelöscht.");
+  });
 
+// Pagination Buttons
 paginationEl &&
   paginationEl.addEventListener("click", e => {
     const btn = e.target.closest(".page-btn");
@@ -432,7 +522,7 @@ paginationEl &&
     }
   });
 
-
+// Nur-Favoriten-Ansicht toggeln
 favViewBtn &&
   favViewBtn.addEventListener("click", () => {
     nurFavoriten = !nurFavoriten;
@@ -441,7 +531,7 @@ favViewBtn &&
     render();
   });
 
-
+// Dark-Mode 
 darkToggle &&
   darkToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark");
@@ -452,5 +542,5 @@ darkToggle &&
     updateDarkIcon();
   });
 
-
+//Start 
 ladeLaender();
