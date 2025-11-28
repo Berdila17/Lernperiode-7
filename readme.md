@@ -66,11 +66,26 @@ Heute habe ich alle Arbeitspakete erledigt das erste Arbeitspaket war eigentlich
 
 ## 28.11
 
-- [ ] Länder nach Flächengrösse sortieren können.
-- [ ] Button mit den man die Favoriten alle auf einmal löschen kann
-- [ ] Layout anpaassen so das man es auch auf den Handy benutzen kann.
-- [ ] Vergleich Modus machen zuerst einmal zum Beispiel nur die Einwohner vergleichen.
+- [x] Länder nach Flächengrösse sortieren können.
+- [x] Button mit den man die Favoriten alle auf einmal löschen kann
+- [x] Layout anpaassen so das man es auch auf den Handy benutzen kann.
+- [x] Vergleich Modus machen zuerst einmal zum Beispiel nur die Einwohner vergleichen.
+
+
+
+Heute habe ich alles gemacht, Ich habe diesmal an 2 verschiedene Tage an den Projekt gearbeitet somit konnte ich mehr Zeit für die Arbeitspakete verwenden der Code wird somit immer viel mehr grösser und es braucht Übersicht weswegen ich dann auch Kommentare hinzufügen musste was es einfacher machen sollte die Übersicht zu behalten.Das Layout anzupassen für Handy war einfach nur die Funktion Vergleichsmodus war anspruchsvoll und hat ein bisschen Zeit gebraucht doch zum Schluss ist es gegangen.
+
+
+## 5.11
+
+- [ ] In dem Suchfeld ein x einbauen so das wenn man draufdrückt der Text darin sich automatisch löscht
+- [ ] Steckbrief nach Währung,Kontinent und Hauptstadt erweitern
+- [ ] Mehr Farbe einfügen so das es "lebendiger" wird
+- [ ] Wenn man etwas Filtert z.B nach Region das es anzeigt wie viel Länder auf diese Region angezeigt werden.
+
+
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
