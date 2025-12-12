@@ -7,7 +7,7 @@
   --accent: #2563eb;
 }
 
-/* Base reset */
+
 * {
   box-sizing: border-box;
 }
@@ -25,7 +25,7 @@ body {
   padding: 14px 16px;
 }
 
-/* Header*/
+
 header {
   position: sticky;
   top: 0;
@@ -61,12 +61,25 @@ header h1 {
   cursor: pointer;
 }
 
+
+.clear-btn{
+  border-color:#ef4444;
+  color:#ef4444;
+  width:42px;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+}
+
+
+
+
 .btn.danger {
   border-color: #b91c1c;
   color: #b91c1c;
 }
 
-/* Suchleiste + Vorschläge */
+
 .searchbar {
   position: relative;
   display: flex;
@@ -84,11 +97,11 @@ header h1 {
   outline: none;
 }
 
-/* Vorschläge */
+
 .search-suggestions {
   position: absolute;
   left: 0;
-  right: 56px;
+  right: 98px;
   top: 38px;
   background: var(--card);
   border: 1px solid var(--line);
@@ -117,7 +130,7 @@ header h1 {
   background: #eef2ff;
 }
 
-/*Layout */
+
 .layout {
   display: grid;
   gap: 16px;
@@ -131,7 +144,7 @@ header h1 {
   }
 }
 
-/* Mobile Header-Anpassung */
+
 @media (max-width: 640px) {
   .header-content {
     flex-direction: column;
@@ -147,7 +160,7 @@ header h1 {
   }
 }
 
-/*Filter*/
+
 aside {
   height: max-content;
   padding: 14px;
@@ -176,7 +189,7 @@ aside {
   margin-top: 10px;
 }
 
-/*Länder Grid*/
+
 .section-title {
   margin: 4px 0 8px;
   font-size: 18px;
@@ -235,7 +248,7 @@ aside {
   font-weight: 600;
 }
 
-/* Stern + Vergleich-Button */
+
 .star {
   position: absolute;
   top: 8px;
@@ -274,13 +287,13 @@ aside {
   border-color: var(--accent);
 }
 
-/* Kleinere Textzeile */
+
 .small {
   font-size: 13px;
   color: var(--muted);
 }
 
-/* Loading*/
+
 .loading {
   max-width: 1200px;
   margin: 12px auto;
@@ -296,7 +309,7 @@ aside {
   display: none;
 }
 
-/* Steckbrief*/
+
 .detail {
   position: relative;
   display: grid;
@@ -344,7 +357,7 @@ aside {
   }
 }
 
-/*Vergleich*/
+
 .compare {
   margin: 18px 0 28px;
 }
@@ -366,7 +379,7 @@ aside {
   margin-top: 0;
 }
 
-/* Seitennummerierung*/
+
 .pagination {
   margin-top: 16px;
   display: flex;
@@ -393,7 +406,7 @@ aside {
   color: var(--muted);
 }
 
-/* Scroll nach oben Button*/
+
 .to-top-btn {
   position: fixed;
   right: 20px;
@@ -423,7 +436,7 @@ aside {
   transform: translateY(-4px);
 }
 
-/* Dark Mode */
+
 .dark {
   --bg: #0b1220;
   --card: #0f172a;
@@ -436,7 +449,7 @@ aside {
   box-shadow: 0 6px 18px rgba(255,255,255,.06);
 }
 
-/* Animation*/
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
