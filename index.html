@@ -13,9 +13,11 @@
       <div class="actions">
         <div class="searchbar">
           <input id="searchInput" placeholder="Land suchen… (z. B. Switzerland, Japan)" />
-          <button id="searchBtn" class="btn">🔍</button>
+           <button id="clearSearchBtn" class="btn clear-btn" title="Suche löschen" aria-label="Suche löschen">✕</button>
+            <button id="searchBtn" class="btn">🔍</button>
 
-          <!--Vorschläge -->
+
+          
           <div id="searchSuggestions" class="search-suggestions"></div>
         </div>
         <button id="toggleFavView" class="btn" title="Nur Favoriten anzeigen umschalten">⭐ Favoriten</button>
@@ -24,22 +26,22 @@
     </div>
   </header>
 
-  <!-- Loading -->
+  
   <div id="loading" class="loading hidden">Lade Daten …</div>
 
   <main class="wrap layout">
-    <!--Liste -->
+    
     <section>
       <h2 class="section-title">Länder</h2>
       <p id="status" class="muted"></p>
 
       <div id="countries" class="grid"></div>
 
-      <!-- Seitennummerierung -->
+      
       <nav id="pagination" class="pagination"></nav>
     </section>
 
-    <!-- Filter auf Seite -->
+    
     <aside>
       <div class="filters">
         <h2>Filter</h2>
@@ -84,7 +86,7 @@
     </aside>
   </main>
 
-  <!-- Steckbrief -->
+  
   <section id="detail" class="detail hidden">
     <button id="detailClose" class="detail-close" aria-label="Schließen">×</button>
     <img id="detailFlag" class="detail-flag" alt="" />
@@ -98,11 +100,14 @@
         <div>Hauptstadt</div><div id="detailCapital">–</div>
         <div>Fläche</div><div id="detailArea">–</div>
         <div>Einwohner</div><div id="detailPopulation">–</div>
+        <div>Kontinent</div><div id="detailContinent">–</div>
+        <div>Währung</div><div id="detailCurrency">–</div>
+
       </div>
     </div>
   </section>
 
-  <!-- Vergleich -->
+
   <section id="compareSection" class="compare hidden">
     <div class="wrap">
       <h2>Ländervergleich (Einwohner)</h2>
@@ -114,7 +119,7 @@
     </div>
   </section>
 
-  <!-- Nach oben Button-->
+ 
   <button id="toTopBtn" class="to-top-btn">⬆</button>
 
   <script src="app.js" defer></script>
