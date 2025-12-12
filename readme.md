@@ -76,15 +76,23 @@ Heute habe ich alle Arbeitspakete erledigt das erste Arbeitspaket war eigentlich
 Heute habe ich alles gemacht, Ich habe diesmal an 2 verschiedene Tage an den Projekt gearbeitet somit konnte ich mehr Zeit für die Arbeitspakete verwenden der Code wird somit immer viel mehr grösser und es braucht Übersicht weswegen ich dann auch Kommentare hinzufügen musste was es einfacher machen sollte die Übersicht zu behalten.Das Layout anzupassen für Handy war einfach nur die Funktion Vergleichsmodus war anspruchsvoll und hat ein bisschen Zeit gebraucht doch zum Schluss ist es gegangen.
 
 
-## 5.11
+## 12.12
 
-- [ ] In dem Suchfeld ein x einbauen so das wenn man draufdrückt der Text darin sich automatisch löscht
-- [ ] Steckbrief nach Währung,Kontinent und Hauptstadt erweitern
-- [ ] Mehr Farbe einfügen so das es "lebendiger" wird
-- [ ] Wenn man etwas Filtert z.B nach Region das es anzeigt wie viel Länder auf diese Region angezeigt werden.
+- [x] In dem Suchfeld ein x einbauen so das wenn man draufdrückt der Text darin sich automatisch löscht
+- [x] Steckbrief nach Währung,Kontinent und Hauptstadt erweitern
+- [x] Mehr Farbe einfügen so das es "lebendiger" wird
+- [x] Wenn man etwas Filtert z.B nach Region das es anzeigt wie viel Länder auf diese Region angezeigt werden.
 
+Heute habe ich an den Projekt weitergearbeitet.Zuerst habe ich neben dem Suchfeld ein x Button eingebaut mitdem man dann die Wörter im Suchfeld automatisch löschen kann dann wurde noch der Steckbrief ergänzt. An der CSS Datei wurde minimal gearbeitet aber es gab auch Änderungen und das letzte Arbeitspaket hat auch ziemlich gut geklappt.
+
+
+## 19.12
+- [ ] Länder die man mit Favorit gekennzeichnet sind eine andere Umrandung geben
+- [ ] Mit Pfeiltasten Seiten wechseln können.
+- [ ] Steckbrief um Sprachen erweitern
 
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
