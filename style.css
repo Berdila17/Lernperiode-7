@@ -460,3 +460,25 @@ aside {
     transform: translateY(0);
   }
 }
+
+.card.fav {
+  border-color: #f59e0b;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.18);
+}
+
+.fav-badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  margin-top: 2px;
+}
+
+.card.fav .fav-badge {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+.fav-border {
+  border: 2px solid #f59e0b !important;
+}
