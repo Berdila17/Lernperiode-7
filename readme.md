@@ -91,7 +91,16 @@ Heute habe ich an den Projekt weitergearbeitet.Zuerst habe ich neben dem Suchfel
 - [ ] Mit Pfeiltasten Seiten wechseln können.
 - [ ] Steckbrief um Sprachen erweitern
 
+## fertiges Projekt 
+<img width="1844" height="1042" alt="image" src="https://github.com/user-attachments/assets/d48f9266-9f03-418c-aeaf-b41e147a6b92" />
+Ich habe eine Web Applikation gebaut. Die Applikation lädt Länder aus einer API und zeigt sie als Karten mit Flagge und Infos an. Man kann Länder suchen, nach Region filtern, nach Einwohnern oder Fläche sortieren, Favoriten speichern und zwischen Seiten wechseln (Pagination). Zusätzlich gibt es einen Steckbrief mit Details (z. B. Hauptstadt, Kontinent, Währung, Sprachen) und einen einfachen Vergleichsmodus, um zwei Länder gegenüberzustellen.Dazu noch kleine features wie Dark Mode, etc..
+
+## Reflexion
+
+In dieser Lernperiode habe ich sehr viel mehr dazu gelernt was Java Script angeht.Natürlich konnte ich nicht am Anfang wie ein Profi alles in JS umsetzen aber ich habe nach Hilfe von ChatGBT gefragt, Nicht direkt nach der Lösung sondern um mir zu helfen mit Erklärungen etc. Obwohl ich mit ChatGBT gearbeitet habe finde ich trotzdem das ich selbstständig gearbeitet habe weil er mir die Lösung dafür nicht auf ein Tablett geliefert hat sondern mir geholfen hat die Funktionen besser zu verstehen oder  mir den Code einfach schöner gemacht und die Kommentare hinzugefügt hat jetzt am Schluss. Insgesamt kann ich aber von diesem Projekt sehr viel mitnehmen, vorallem in JS. Was ich nächste Periode besser machen will ist noch selbstständiger zu arbeiten und konzentriertern, weil manchmal wenn ich viele Sachen nicht wusste bin ein bisschen abgedriftet.Insgesamt hat es trotzdem sehr SPass gemacht.
+
 ☝️ Vergessen Sie nicht, Ihren Code auf github hochzuladen
+
 
 
 
